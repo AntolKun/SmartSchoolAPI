@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const authRoutes = require("./routes/authRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 const app = express();
 
 // Memuat variabel lingkungan dari file .env
@@ -11,6 +12,7 @@ app.use(express.json());
 
 // Rute untuk otentikasi
 app.use("/api/auth", authRoutes);
+app.use("/api/admin", adminRoutes);
 
 // Menjalankan server
 const PORT = process.env.PORT || 3000;
