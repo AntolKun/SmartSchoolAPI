@@ -1,0 +1,47 @@
+datasource db {
+  provider = "mysql" // Atau gunakan database lain (PostgreSQL, SQLite, dll.)
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  username   String   @unique
+  password   String
+  role       String   // siswa, guru, admin
+  rememberMe String?  // Token untuk "remember me"
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relasi ke tabel siswa, guru, atau admin
+  siswa      Siswa?
+  guru       Guru?
+  admin      Admin?
+}
+
+model Siswa {
+  id     Int    @id @default(autoincrement())
+  userId Int    @unique
+  nama   String
+  kelas  String
+  user   User   @relation(fields: [userId], references: [id]) // `references` hanya di sisi ini
+}
+
+model Guru {
+  id     Int    @id @default(autoincrement())
+  userId Int    @unique
+  nama   String
+  user   User   @relation(fields: [userId], references: [id]) // `references` hanya di sisi ini
+}
+
+model Admin {
+  id     Int    @id @default(autoincrement())
+  userId Int    @unique
+  nama   String
+  user   User   @relation(fields: [userId], references: [id]) // `references` hanya di sisi ini
+}
+
